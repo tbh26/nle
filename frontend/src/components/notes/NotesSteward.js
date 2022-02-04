@@ -3,7 +3,7 @@ import NotesActions from './NotesActions';
 
 function NotesSteward() {
     return (
-        <div className="flex justify-evenly">
+        <div className="grid grid-cols-2 gap-4">
             <NotesList />
             <NotesActions />
         </div>
