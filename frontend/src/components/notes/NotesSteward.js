@@ -1,5 +1,5 @@
 function NotesSteward() {
-    return <div className="underline">notes...</div>;
+    return <div className="flex">notes..</div>;
 }
 
 export default NotesSteward;
