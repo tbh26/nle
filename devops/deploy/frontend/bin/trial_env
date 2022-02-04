@@ -1,0 +1,49 @@
+
+me=$(basename "$0")
+devops_dir=$(printf $(dirname "$0")/.. | sed 's;/bin/..;;' )
+project_base_dir=$(printf ${devops_dir}/../../ | sed 's;/devops/..;;' )
+host='helena'
+remote_base='trial_tbhes_net/apps/hello_react'
+
+printf "${me}, devops_dir: \"${devops_dir}\", project_base_dir: \"${project_base_dir}\". \n"
+
+set -e
+set -x
+
+cd ${project_base_dir}
+
+pwd
+
+
+cd frontend
+
+# type nvm
+
+if [ -d "${HOME}/.nvm" ]
+then
+  export NVM_DIR="$HOME/.nvm"
+  # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  source "$NVM_DIR/nvm.sh"
+fi
+
+type nvm
+nvm use
+
+exit
+
+if [ ! -d 'node_modules' ]
+then
+  npm install
+fi
+
+npm run build
+
+cd build
+
+ssh ${host} ls -al ${remote_base}
+
+ssh ${host} rm -rf ${remote_base}/\*
+
+scp -pr ./* "${host}:${remote_base}/"
+
+ssh ${host} ls -al ${remote_base}
