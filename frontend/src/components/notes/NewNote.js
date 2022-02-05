@@ -2,11 +2,14 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 function NewNote(props) {
-    function formSubmit(formData) {
+    function formSubmit(formData, { resetForm }) {
         // e.preventDefault(); //// already done by formik, I guess
+        console.debug('form-data:', formData);
         const { title, content } = formData;
         console.debug(`form-data; title: ${title}, content: ${content}`);
         props.onNewNote({ newNote: { title, content } });
+        // clear inputs, how?
+        resetForm();
     }
 
     return (
@@ -26,7 +29,7 @@ function NewNote(props) {
                         .min(1, 'content is minimal 1 char...'),
                 })}
                 onSubmit={formSubmit}>
-                {({ values, errors, handleChange, handleBlur, handleSubmit }) => {
+                {({ values, errors, isValid, handleChange, handleBlur, handleSubmit }) => {
                     return (
                         <form onSubmit={handleSubmit}>
                             <div className="grid grid-rows-3">
@@ -42,7 +45,7 @@ function NewNote(props) {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             type="text"
-                                            placeholder="title placeholder"
+                                            placeholder="enter 'title' here"
                                         />
                                     </div>
 
@@ -61,7 +64,7 @@ function NewNote(props) {
                                             id="content"
                                             value={values.content}
                                             onChange={handleChange}
-                                            placeholder="bla bla.."
+                                            placeholder="enter 'content' here..."
                                         />
                                     </div>
 
@@ -72,13 +75,22 @@ function NewNote(props) {
                                     </div>
                                 </div>
 
-                                <div>
+                                <div hidden={!isValid}>
                                     <button
-                                        type="submit"
-                                        className="m-2 p-2 border-2 rounded-xl shadow-xl w-full">
+                                        className="m-2 p-2 border-2 rounded-xl valid:shadow-xl w-full font-semibold"
+                                        type="submit">
                                         submit
                                     </button>
                                 </div>
+                                <div hidden={isValid}>
+                                    <button
+                                        disabled
+                                        className="m-2 p-2 border-2 border-dotted rounded-xl valid:shadow-xl w-full font-light"
+                                        type="submit">
+                                        submit
+                                    </button>
+                                </div>
+
                             </div>
                         </form>
                     );
