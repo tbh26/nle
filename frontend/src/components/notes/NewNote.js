@@ -8,7 +8,7 @@ function NewNote(props) {
         const { title, content } = formData;
         console.debug(`form-data; title: ${title}, content: ${content}`);
         props.onNewNote({ newNote: { title, content } });
-        // clear inputs, how?
+        // clear inputs
         resetForm();
     }
 
@@ -77,7 +77,7 @@ function NewNote(props) {
 
                                 <div hidden={!isValid}>
                                     <button
-                                        className="m-2 p-2 border-2 rounded-xl valid:shadow-xl w-full font-semibold"
+                                        className="m-2 p-2 border-2 rounded-xl shadow-xl w-full font-semibold"
                                         type="submit">
                                         submit
                                     </button>
@@ -85,12 +85,11 @@ function NewNote(props) {
                                 <div hidden={isValid}>
                                     <button
                                         disabled
-                                        className="m-2 p-2 border-2 border-dotted rounded-xl valid:shadow-xl w-full font-light"
+                                        className="m-2 p-2 border-2 border-dotted rounded-xl shadow-xl w-full font-light"
                                         type="submit">
                                         submit
                                     </button>
                                 </div>
-
                             </div>
                         </form>
                     );
