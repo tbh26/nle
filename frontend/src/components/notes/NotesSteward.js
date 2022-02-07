@@ -1,5 +1,7 @@
 import NotesList from './NotesList';
 import NoteActions from './NoteActions';
+import { isEqual, isNote } from './Note';
+
 import { useState } from 'react';
 
 function NotesSteward() {
@@ -19,23 +21,32 @@ function NotesSteward() {
     }
 
     function updateSelectNote(note) {
-        console.info('(new) selected note:', note);
-        if (note && 'title' in note && 'content' in note) {
-            if (selectedNote && selectedNote.title && selectedNote.content) {
-                if (
-                    note.title === selectedNote.title &&
-                    note.content === selectedNote.content
-                ) {
-                    setSelectedNote(null); // deselect
-                } else {
-                    setSelectedNote(note);
-                }
+        console.info('(de)select note:', note);
+        if (isNote(note)) {
+            if (isEqual(note, selectedNote)) {
+                // deselect of toggle(clicked again)
+                setSelectedNote(null);
             } else {
                 setSelectedNote(note);
             }
         } else {
-            console.warn('fail on note selection, note:', note);
+            console.warn('fail on note (de)select, note:', note);
         }
+    }
+
+    function editSelectedNote(note) {
+        console.info('edit selected note:', note);
+    }
+
+    function deleteSelectedNote(note) {
+        // maybe a confirmation?
+        console.info('delete select note:', note);
+        const newNotesList = notes.filter((n) => {
+            return note.title !== n.title;
+        });
+        console.info('update notes, new notes list:', newNotesList);
+        setNotes(newNotesList);
+        // and clear selected note..
     }
 
     return (
@@ -45,7 +56,12 @@ function NotesSteward() {
                 onSelectNote={updateSelectNote}
                 selectedNote={selectedNote}
             />
-            <NoteActions selectedNote={selectedNote} onNewNote={newNote} />
+            <NoteActions
+                selectedNote={selectedNote}
+                editSelected={editSelectedNote}
+                deleteSelected={deleteSelectedNote}
+                onNewNote={newNote}
+            />
         </div>
     );
 }

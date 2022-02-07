@@ -1,5 +1,6 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { NewNoteObject } from './Note';
 
 function NewNote(props) {
     function formSubmit(formData, { resetForm }) {
@@ -7,14 +8,14 @@ function NewNote(props) {
         console.debug('form-data:', formData);
         const { title, content } = formData;
         console.debug(`form-data; title: ${title}, content: ${content}`);
-        props.onNewNote({ newNote: { title, content } });
+        const newNoteObj = NewNoteObject(title, content);
+        props.onNewNote({ newNote: newNoteObj });
         // clear inputs
         resetForm();
     }
 
     return (
         <div className="p-2">
-            <header>new note</header>
             <Formik
                 initialValues={{
                     title: '',
@@ -79,7 +80,7 @@ function NewNote(props) {
                                     <button
                                         className="m-2 p-2 border-2 rounded-xl shadow-xl w-full font-semibold"
                                         type="submit">
-                                        submit
+                                        new note
                                     </button>
                                 </div>
                                 <div hidden={isValid}>
@@ -87,7 +88,7 @@ function NewNote(props) {
                                         disabled
                                         className="m-2 p-2 border-2 border-dotted rounded-xl shadow-xl w-full font-light"
                                         type="submit">
-                                        submit
+                                        ...
                                     </button>
                                 </div>
                             </div>
