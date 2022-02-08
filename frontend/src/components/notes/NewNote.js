@@ -4,12 +4,13 @@ import { NewNoteObject } from './Note';
 
 function NewNote(props) {
     function formSubmit(formData, { resetForm }) {
-        // e.preventDefault(); //// already done by formik, I guess
-        console.debug('form-data:', formData);
+        //// e.preventDefault(); //// already done by formik, I guess
+        // console.debug('NewNote/formSubmit; form-data:', formData);
         const { title, content } = formData;
-        console.debug(`form-data; title: ${title}, content: ${content}`);
-        const newNoteObj = NewNoteObject(title, content);
-        props.onNewNote({ newNote: newNoteObj });
+        console.debug(`NewNote/formSubmit; form-data again, title: ${title}, content: ${content}`);
+        const newNote = { newNote: NewNoteObject(title, content) };
+        console.debug('NewNote/formSubmit; new note (object):', newNote);
+        props.onNewNote(newNote);
         // clear inputs
         resetForm();
     }
@@ -37,7 +38,7 @@ function NewNote(props) {
                                 <div className="grid grid-rows-2">
                                     <div className="grid grid-cols-3">
                                         <label className="m-2 p-2 text-right" htmlFor="title">
-                                            note title
+                                            title
                                         </label>
                                         <input
                                             className="m-2 p-2"
@@ -58,7 +59,7 @@ function NewNote(props) {
                                 <div>
                                     <div className="grid grid-cols-3">
                                         <label className="m-2 p-2 text-right" htmlFor="content">
-                                            note content
+                                            content
                                         </label>
                                         <textarea
                                             className="m-2 p-2 col-span-2 max-w-max"

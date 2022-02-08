@@ -3,7 +3,7 @@ import SelectedNote from './SelectedNote';
 import { isNote } from './Note';
 
 function NoteActions(props) {
-    const { onNewNote, selectedNote, editSelected, deleteSelected } = props;
+    const { onNewNote, selectedNote, updateSelected, deleteSelected } = props;
     let hasSelectedNote = isNote(selectedNote);
     return (
         <div className="m-8">
@@ -12,16 +12,17 @@ function NoteActions(props) {
                     <div className="m-2 p-4 border-2">
                         <SelectedNote
                             selectedNote={selectedNote}
-                            editSelected={editSelected}
+                            updateSelected={updateSelected}
                             deleteSelected={deleteSelected}
                         />
                     </div>
-                    <div className="m-2 p-4 border-2 text-center"> =-= </div>
+                    <div className="m-2 p-4 border-2 text-center"> &hellip; </div>
                 </div>
             ) : (
                 <div>
                     <div className="m-2 p-4 border-2 text-center">
-                        <b>no</b> selected note!
+                        <span className="font-bold text-blue-900">no</span>
+                        <span className=""> selected note</span>
                     </div>
                     <div className="m-2 p-4 border-2">
                         <NewNote onNewNote={onNewNote} />

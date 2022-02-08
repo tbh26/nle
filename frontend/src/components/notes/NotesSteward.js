@@ -1,6 +1,6 @@
 import NotesList from './NotesList';
 import NoteActions from './NoteActions';
-import { isEqual, isNote } from './Note';
+import { isEqual, isNote, noteObject } from './Note';
 
 import { useState } from 'react';
 
@@ -8,45 +8,49 @@ function NotesSteward() {
     const [notes, setNotes] = useState([]);
     const [selectedNote, setSelectedNote] = useState(null);
 
-    function newNote(obj) {
-        console.info('new note, obj:', obj);
-        if (obj.newNote && 'title' in obj.newNote && 'content' in obj.newNote) {
-            const { title, content } = obj.newNote;
-            const newNotes = [...notes, { title, content }];
+    function newNote(someObject) {
+        console.debug('NotesSteward/newNote; new note, object:', someObject);
+        if (someObject.newNote && isNote(someObject.newNote)) {
+            const newOne = noteObject(someObject.newNote);
+            console.debug('NotesSteward/newNote; new one (note):', newOne);
+            const newNotes = [...notes, newOne];
             setNotes(newNotes);
+            // console.debug('(new) notes:', notes);
         } else {
-            console.warn('new-note, invalid new note:', obj);
+            console.warn('NotesSteward, new-note, invalid new note (object):', someObject);
         }
-        console.info('notes:', notes);
     }
 
     function updateSelectNote(note) {
-        console.info('(de)select note:', note);
+        console.debug('NotesSteward/updateSelectNote; (de)select clicked note:', note);
+        console.debug('NotesSteward/updateSelectNote; current (old) selected note:', selectedNote);
         if (isNote(note)) {
             if (isEqual(note, selectedNote)) {
-                // deselect of toggle(clicked again)
+                //// deselect / toggle (clicked again)
                 setSelectedNote(null);
             } else {
                 setSelectedNote(note);
             }
         } else {
-            console.warn('fail on note (de)select, note:', note);
+            console.debug('NotesSteward/updateSelectNote; *not* a note, deselect any...');
+            setSelectedNote(null);
         }
     }
 
-    function editSelectedNote(note) {
-        console.info('edit selected note:', note);
+    function updateEditedNote(note) {
+        console.info('NotesSteward/updateEditedNote; update edited (selected) note:', note);
     }
 
     function deleteSelectedNote(note) {
         // maybe a confirmation?
-        console.info('delete select note:', note);
+        console.debug('NotesSteward/deleteSelectedNote, delete select note:', note);
         const newNotesList = notes.filter((n) => {
             return note.title !== n.title;
         });
-        console.info('update notes, new notes list:', newNotesList);
+        console.debug('NotesSteward/deleteSelectedNote; update notes, new notes list:', newNotesList);
         setNotes(newNotesList);
         // and clear selected note..
+        setSelectedNote(null);
     }
 
     return (
@@ -58,7 +62,7 @@ function NotesSteward() {
             />
             <NoteActions
                 selectedNote={selectedNote}
-                editSelected={editSelectedNote}
+                updateSelected={updateEditedNote}
                 deleteSelected={deleteSelectedNote}
                 onNewNote={newNote}
             />
