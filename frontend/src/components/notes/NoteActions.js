@@ -1,6 +1,7 @@
 import NewNote from './NewNote';
 import SelectedNote from './SelectedNote';
 import { isNote } from './Note';
+import NoteForm from './NoteForm';
 
 function NoteActions(props) {
     const { onNewNote, selectedNote, updateSelected, deleteSelected } = props;
@@ -16,6 +17,7 @@ function NoteActions(props) {
                             deleteSelected={deleteSelected}
                         />
                     </div>
+                    <hr />
                     <div className="m-2 p-4 border-2 text-center"> &hellip; </div>
                 </div>
             ) : (

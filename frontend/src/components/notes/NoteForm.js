@@ -2,18 +2,24 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { NewNoteObject } from './Note';
 
-function NewNote(props) {
+function NoteForm(props) {
+    const {
+        hasCancel,
+        cancelButtonText,
+        onCancel,
+        submitButtonText,
+        initialTitle,
+        initialContent,
+        onNoteFormSubmit,
+    } = props;
+
     function formSubmit(formData, { resetForm }) {
-        //// e.preventDefault(); //// already done by formik, I guess
-        // console.debug('NewNote/formSubmit; form-data:', formData);
         const { title, content } = formData;
-        console.debug(
-            `NewNote/formSubmit; form-data again, title: ${title}, content: ${content}`
-        );
-        const newNote = { newNote: NewNoteObject(title, content) };
-        console.debug('NewNote/formSubmit; new note (object):', newNote);
-        props.onNewNote(newNote);
-        // clear inputs
+        //console.debug(`NoteForm/formSubmit; form-data again, title: ${title}, content: ${content}`);
+        const formNote = { formNote: NewNoteObject(title, content) };
+        console.debug('NoteForm/formSubmit; note (object):', formNote);
+        onNoteFormSubmit(formNote);
+        // clear inputs ??
         resetForm();
     }
 
@@ -21,8 +27,8 @@ function NewNote(props) {
         <div className="p-2">
             <Formik
                 initialValues={{
-                    title: '',
-                    content: '',
+                    title: initialTitle,
+                    content: initialContent,
                 }}
                 validationSchema={Yup.object({
                     title: Yup.string()
@@ -79,20 +85,32 @@ function NewNote(props) {
                                     </div>
                                 </div>
 
-                                <div hidden={!isValid}>
-                                    <button
-                                        className="m-2 p-2 border-2 rounded-xl shadow-xl w-full font-semibold"
-                                        type="submit">
-                                        new note
-                                    </button>
-                                </div>
-                                <div hidden={isValid}>
-                                    <button
-                                        disabled
-                                        className="m-2 p-2 border-2 border-dotted rounded-xl shadow-xl w-full font-light"
-                                        type="submit">
-                                        ...
-                                    </button>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        {hasCancel ? (
+                                            <div
+                                                className="m-2 p-2 rounded-xl shadow-xl bg-sky-400"
+                                                onClick={onCancel}>
+                                                {cancelButtonText}
+                                            </div>
+                                        ) : null}
+                                    </div>
+                                    <div>
+                                        {isValid ? (
+                                            <div
+                                                className="m-2 p-2 border-2 rounded-xl shadow-xl w-full font-semibold"
+                                                type="submit">
+                                                {submitButtonText}
+                                            </div>
+                                        ) : (
+                                            <div
+                                                disabled
+                                                className="m-2 p-2 border-2 border-dotted rounded-xl shadow-xl w-full font-light"
+                                                type="submit">
+                                                ...
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -103,4 +121,4 @@ function NewNote(props) {
     );
 }
 
-export default NewNote;
+export default NoteForm;

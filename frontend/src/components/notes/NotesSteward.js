@@ -23,7 +23,10 @@ function NotesSteward() {
 
     function updateSelectNote(note) {
         console.debug('NotesSteward/updateSelectNote; (de)select clicked note:', note);
-        console.debug('NotesSteward/updateSelectNote; current (old) selected note:', selectedNote);
+        console.debug(
+            'NotesSteward/updateSelectNote; current (old) selected note:',
+            selectedNote
+        );
         if (isNote(note)) {
             if (isEqual(note, selectedNote)) {
                 //// deselect / toggle (clicked again)
@@ -47,7 +50,10 @@ function NotesSteward() {
         const newNotesList = notes.filter((n) => {
             return note.title !== n.title;
         });
-        console.debug('NotesSteward/deleteSelectedNote; update notes, new notes list:', newNotesList);
+        console.debug(
+            'NotesSteward/deleteSelectedNote; update notes, new notes list:',
+            newNotesList
+        );
         setNotes(newNotesList);
         // and clear selected note..
         setSelectedNote(null);

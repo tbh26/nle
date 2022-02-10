@@ -1,5 +1,6 @@
 import { isNote } from './Note';
 import { useState } from 'react';
+import NoteForm from './NoteForm';
 
 function SelectedNote(props) {
     const { selectedNote, updateSelected, deleteSelected } = props;
@@ -48,27 +49,49 @@ function SelectedNote(props) {
         updateEditMode(!editMode);
     }
 
+    function editFormCancel() {
+        updateEditMode(false);
+        setLeftButtonText('edit');
+        setRightButtonText('delete');
+    }
+
     function deleteSelectedWrapper() {
         deleteSelected(selectedNote);
+    }
+
+    function noteFormSubmit(obj) {
+        console.info('SelectedNote/noteFormSubmit, here. obj:', obj);
     }
 
     return (
         <div>
             {editMode ? (
                 <div>
-                    <div>
-                        <b>edit...</b>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div
-                            className="m-2 p-2 rounded-xl shadow-xl bg-sky-400"
-                            onClick={cancelEdit}>
-                            {leftButtonText}
+                    <form>
+                        <div>
+                            <b>edit...</b>
                         </div>
-                        <div className="m-2 p-2 rounded-xl shadow-xl bg-red-500">
-                            {rightButtonText}
+                        <div className="grid grid-cols-2 gap-4">
+                            <div
+                                className="m-2 p-2 rounded-xl shadow-xl bg-sky-400"
+                                onClick={cancelEdit}>
+                                {leftButtonText}
+                            </div>
+                            <div className="m-2 p-2 rounded-xl shadow-xl bg-red-500">
+                                {rightButtonText}
+                            </div>
                         </div>
-                    </div>
+                    </form>
+                    <hr />
+                    <NoteForm
+                        hasCancel={true}
+                        cancelButtonText="cancel edit"
+                        onCancel={editFormCancel}
+                        submitButtonText="submit update"
+                        initialTitle={title}
+                        initialContent={content}
+                        onNoteFormSubmit={noteFormSubmit}
+                    />
                 </div>
             ) : (
                 <div className="m-2 p-2 text-center">
