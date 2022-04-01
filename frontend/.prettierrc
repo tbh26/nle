@@ -1,0 +1,13 @@
+
+# .prettierrc / "yaml" style
+
+trailingComma: "es5"
+printWidth: 96
+tabWidth: 4
+
+semi: true
+singleQuote: true
+jsxSingleQuote: false
+bracketSameLine: true
+bracketSpacing: true
+arrowParens: "always"
