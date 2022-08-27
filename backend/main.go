@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"backend/nle/app"
+)
 
 func main() {
-	fmt.Println("Hello, world.")
+	app.StartWebApp()
 }
