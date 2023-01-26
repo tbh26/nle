@@ -1,0 +1,18 @@
+### Request to get GraphQL Schema
+// Our server works with the following GraphQL schema
+#GET /{{host}}:{{port}}/{{path_prefix}}/{{graphql_endpoint}}
+#Content-Type: application/json
+#Accept: application/json
+
+
+#>> {{$historyFolder}}/examples.graphqls
+
+### Hello Query
+// We just write a GraphQL query in the request body
+GRAPHQL /{{host}}:{{port}}/{{path_prefix}}/{{graphql_endpoint}}
+
+{
+    hello {
+        message
+    }
+}
